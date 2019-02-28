@@ -8,35 +8,51 @@ coeffs_poly_l = {}
 coeff = {}
 coeffs_npl = {} #coefficients des numémrateurs des polynômes de Lagrange
 
+
+
+
+
+#---------------------------------------IMPORTATION DES VALEURS-----------------------------------
+
+a = ""
+with open("file.txt", "r") as file:
+	a = file.read()
+	a = a.split(".")
+
+for i in range(1, 119):
+	coo[i] = (i, int(a[i-1]))
+print(coo)
+choix = 118
+
 #------------------------------------INPUT DU NOMBRE DE POINTS-------------------------------------------
 
-print("\n\n\nProgramme permettant de trouver le polynôme qui passe par n points du plan : ")
-while 1+1==2:
-	choix = input("Nombre de points à relier : ")
-	try:
-		choix = int(choix)
-		break
-	except:
-		print("Mauvais choix ! ")
-		continue
+#print("\n\n\nProgramme permettant de trouver le polynôme qui passe par n points du plan : ")
+#while 1+1==2:
+#	choix = input("Nombre de points à relier : ")
+#	try:
+#		choix = int(choix)
+#		break
+#	except:
+#		print("Mauvais choix ! ")
+#		continue
 
 #-------------------------------INPUT ET ENREGISTREMENT DES COORDONNEES----------------------------------
 
-for i in range(1, choix+1):
-	while 1+1==2:
-		print("Coordonnées du point " , i , " : ")
-		ask_x = "x_" + str(i) + " = "
-		ask_y = "y_" + str(i) + " = "
-		x = input(ask_x)
-		y = input(ask_y)
-		try:
-			x = int(x)
-			y = int(y)
-			break
-		except:
-			print("Une coordonnée doit être un nombre...\n")
-			continue
-	coo[i] = (x,y)
+#for i in range(1, choix+1):
+#	while 1+1==2:
+#		print("Coordonnées du point " , i , " : ")
+#		ask_x = "x_" + str(i) + " = "
+#		ask_y = "y_" + str(i) + " = "
+#		x = input(ask_x)
+#		y = input(ask_y)
+#		try:
+#			x = int(x)
+#			y = int(y)
+#			break
+#		except:
+#			print("Une coordonnée doit être un nombre...\n")
+#			continue
+#	coo[i] = (x,y)
 
 #---------------------------CALCUL DES COEFFS DVT LES POLYNOMES DE LAGRANGE----------------------------
 
@@ -89,17 +105,44 @@ for i in range(1, choix+1):
 
 #----------------------------------CALCUL DES COEFFS FINAUX----------------------------------------
 
-
-
+coeff['total'] = {}
 
 for i in range(1, choix+1):
 	for j in range(0, choix):
 		coeff[i][j] *= coeffs_poly_l[i]
+		if i == 1:
+			coeff['total'][j+1] = 0
+		coeff['total'][j+1] += coeff[i][j]
 
 
-print(coeffs_poly_l)
-print(coeff)
+for l in range(1, choix+1):
+	del coeff[l]
 
+#----------------------------------ARRONDISSEMENT DES COEFFS--------------------------------------
 
+for i in range(1, choix+1):
+	a = ""
+	part_ent = ""
+	part_dec = ""
+	coeff['total'][i] = str(coeff['total'][i])
+	a = coeff['total'][i]
 
-#{1: (3, 4), 2: (2, 1), 3: (5, 6)}
+	a = a.split(".")
+
+	part_ent = a[0]
+	part_dec = a[1]
+
+	part_dec = a[1][:100]
+	
+	a = part_ent + "." + part_dec
+	coeff['total'][i] = a
+
+#--------------------------------------AFFICHAGE DES RESULTATS-----------------------------------
+
+output = ""
+for i in range(1, choix):
+	output += str(coeff['total'][i]) + ".x^" + str(choix-i) + ") + "
+output += str(coeff['total'][choix])
+
+print("\n\n")
+print(output)
