@@ -64,9 +64,6 @@ for i in range(1, choix+1):
 
 		if j == i:
 			key = 1
-			#coeff[i][j].append(-coo[j+1][0])
-			#coeff[i][j].append(0)
-			#continue
 
 		for k in range(1, j+1):
 
@@ -76,31 +73,32 @@ for i in range(1, choix+1):
 				value = coeff[i][j-1][k] + (coeff[i][j-1][k-1] * -coo[j][0])
 
 
-			print(coeff)
-
 			coeff[i][j].append(value)
 			if j == k:
 				coeff[i][j].append(0)
 
 
-	#a = []
-	#a = coeff[i][choix-1]
+	a = []
+	a = coeff[i][choix-1]
 
-	#for l in range(0, choix):
-	#	del coeff[i][l]
+	for l in range(0, choix):
+		del coeff[i][l]
 
-	#coeff[i] = a
-	#del coeff[i][choix]
+	coeff[i] = a
+	del coeff[i][choix]
 
-	print(coeff)
-
-
+#----------------------------------CALCUL DES COEFFS FINAUX----------------------------------------
 
 
-#print(coo)
-#print(coeffs_poly_l)
-#print(coeff)
 
+
+for i in range(1, choix+1):
+	for j in range(0, choix):
+		coeff[i][j] *= coeffs_poly_l[i]
+
+
+print(coeffs_poly_l)
+print(coeff)
 
 
 
