@@ -141,7 +141,7 @@ for i in range(1, choix+1):
 
 output = ""
 for i in range(1, choix):
-	output += str(coeff['total'][i]) + ".x^" + str(choix-i) + ") + "
+	output += str(coeff['total'][i]) + "x^" + str(choix-i) + " + "
 output += str(coeff['total'][choix])
 
 print("\n\n")
