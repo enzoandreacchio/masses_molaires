@@ -21,7 +21,7 @@ with open("file.txt", "r") as file:
 
 for i in range(1, 119):
 	coo[i] = (i, int(a[i-1]))
-print(coo)
+
 choix = 118
 
 #------------------------------------INPUT DU NOMBRE DE POINTS-------------------------------------------
@@ -141,7 +141,8 @@ for i in range(1, choix+1):
 
 output = ""
 for i in range(1, choix):
-	output += str(coeff['total'][i]) + "x^" + str(choix-i) + " + "
+	output += str(coeff['total'][i]) + "x^(" + str(choix-i) + ") + "
+	#output += str(coeff['total'][i]) + "x^" + str(choix-i) + " + "
 output += str(coeff['total'][choix])
 
 print("\n\n")
