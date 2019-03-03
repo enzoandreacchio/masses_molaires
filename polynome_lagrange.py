@@ -1,4 +1,4 @@
-from decimal import Decimal
+from tkinter import *
 
 coo = {}
 x = ""
@@ -10,6 +10,7 @@ coeffs_poly_l = {}
 coeff = {}
 coeffs_npl = {} #coefficients des numémrateurs des polynômes de Lagrange
 test = {}
+frac = {}
 
 
 #------------------------------------INPUT DU NOMBRE DE POINTS-------------------------------------------
@@ -92,7 +93,87 @@ for i in range(1, choix+1):
 
 	coeff[i] = a
 	del coeff[i][choix]
-print(coeff)
+
+
+for i in range(1, choix+1):
+	for j in range(0, choix):
+		coeff[i][j] *= coo[i][1]
+
+
+for i in range(1, choix+1):
+	frac[i] = {}
+	for j in range(0, choix):
+		frac[i][j+1] = [coeff[i][j], test[i]]
+
+
+def somme_frac(frac_1, frac_2):
+    num_1 = frac_1[0] * frac_2[1]
+    num_2 = frac_2[0] * frac_1[1]
+    deno_commun = frac_1[1] * frac_2[1]
+    num = num_1 + num_2
+    return [num, deno_commun]
+
+frac_f = {}
+for i in range(1, choix+1):
+	for j in range(1, choix):
+		frac[j+1][i] = somme_frac(frac[j][i], frac[j+1][i])
+	frac_f[i] = frac[choix][i]
+
+print("\n")
+print(frac)
+print(frac_f)
+
+def pgcd(a,b):
+    if b==0:
+        return a
+    else:
+        r=a%b
+        return pgcd(b,r)
+
+def simp(f):
+	d = pgcd(f[0], f[1])
+	f[0] /= d
+	f[1] /= d
+	frac = [f[0], f[1]]
+	return frac
+
+for i in range(1, choix+1):
+	frac_f[i] = simp(frac_f[i])
+	for j in range(0, 2):
+		frac_f[i][j] = int(frac_f[i][j])
+
+
+print(frac_f)
+
+
+output = ""
+for i in range(1, choix-1):
+	if frac_f[i][1] == 1:
+		output += str(frac_f[i][0]) + ".x^(" + str(choix-i) + ") + "
+	else:
+		output += "(" + str(frac_f[i][0]) + "/" + str(frac_f[i][1]) + ").x^(" + str(choix-i) + ") + "
+
+if frac_f[choix-1][1] == 1:
+	output += str(frac_f[choix-1][0]) + ".x + "
+else:
+	output += "(" + str(frac_f[choix-1][0]) + "/" + str(frac_f[choix-1][1]) + ").x + "
+
+if frac_f[choix][1] == 1:
+	output += str(frac_f[choix][0])
+else:
+	output += str(frac_f[choix][0]) + "/" + str(frac_f[choix][1])
+
+a = Fraction(1,8)
+
+print(output)
+print(a)
+
+
+
+
+
+"""
+
 
 #----------------------------------CALCUL DES COEFFS FINAUX----------------------------------------
 
@@ -137,3 +218,6 @@ output += str(coeff['total'][choix])
 
 print("\n\n")
 print(output)
+
+
+"""
