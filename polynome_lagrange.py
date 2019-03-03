@@ -9,6 +9,7 @@ coeff_p = float()
 coeffs_poly_l = {}
 coeff = {}
 coeffs_npl = {} #coefficients des numémrateurs des polynômes de Lagrange
+test = {}
 
 
 #------------------------------------INPUT DU NOMBRE DE POINTS-------------------------------------------
@@ -51,7 +52,9 @@ for i in range(1, choix+1):
 		d *= coo[i][0]-coo[j][0]
 	coeff_p = (coo[i][1])/d
 	coeffs_poly_l[i] = coeff_p
-	
+	test[i] = d
+print(test)
+
 #-----------------CALCUL DES COEFFS DE CHAQUE NUMERATEUR DE CHAQUE POLYNOME DE LAGRANGE----------------
 
 for i in range(1, choix+1):
@@ -89,6 +92,7 @@ for i in range(1, choix+1):
 
 	coeff[i] = a
 	del coeff[i][choix]
+print(coeff)
 
 #----------------------------------CALCUL DES COEFFS FINAUX----------------------------------------
 
