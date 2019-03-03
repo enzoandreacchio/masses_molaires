@@ -1,5 +1,3 @@
-from tkinter import *
-
 coo = {}
 x = ""
 y = ""
@@ -54,7 +52,6 @@ for i in range(1, choix+1):
 	coeff_p = (coo[i][1])/d
 	coeffs_poly_l[i] = coeff_p
 	test[i] = d
-print(test)
 
 #-----------------CALCUL DES COEFFS DE CHAQUE NUMERATEUR DE CHAQUE POLYNOME DE LAGRANGE----------------
 
@@ -119,9 +116,6 @@ for i in range(1, choix+1):
 		frac[j+1][i] = somme_frac(frac[j][i], frac[j+1][i])
 	frac_f[i] = frac[choix][i]
 
-print("\n")
-print(frac)
-print(frac_f)
 
 def pgcd(a,b):
     if b==0:
@@ -143,9 +137,6 @@ for i in range(1, choix+1):
 		frac_f[i][j] = int(frac_f[i][j])
 
 
-print(frac_f)
-
-
 output = ""
 for i in range(1, choix-1):
 	if frac_f[i][1] == 1:
@@ -163,10 +154,9 @@ if frac_f[choix][1] == 1:
 else:
 	output += str(frac_f[choix][0]) + "/" + str(frac_f[choix][1])
 
-a = Fraction(1,8)
-
+print("\n\n\n")
+print("Le polynôme passant par ces points est : ")
 print(output)
-print(a)
 
 
 
