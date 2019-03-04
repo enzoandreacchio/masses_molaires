@@ -7,7 +7,9 @@ coeff_p = float()
 coeffs_poly_l = {}
 coeff = {}
 coeffs_npl = {} #coefficients des numémrateurs des polynômes de Lagrange
-
+test = {}
+frac = {}
+frac_f = {}
 
 
 
@@ -24,36 +26,6 @@ for i in range(1, 119):
 
 choix = 118
 
-#------------------------------------INPUT DU NOMBRE DE POINTS-------------------------------------------
-
-#print("\n\n\nProgramme permettant de trouver le polynôme qui passe par n points du plan : ")
-#while 1+1==2:
-#	choix = input("Nombre de points à relier : ")
-#	try:
-#		choix = int(choix)
-#		break
-#	except:
-#		print("Mauvais choix ! ")
-#		continue
-
-#-------------------------------INPUT ET ENREGISTREMENT DES COORDONNEES----------------------------------
-
-#for i in range(1, choix+1):
-#	while 1+1==2:
-#		print("Coordonnées du point " , i , " : ")
-#		ask_x = "x_" + str(i) + " = "
-#		ask_y = "y_" + str(i) + " = "
-#		x = input(ask_x)
-#		y = input(ask_y)
-#		try:
-#			x = int(x)
-#			y = int(y)
-#			break
-#		except:
-#			print("Une coordonnée doit être un nombre...\n")
-#			continue
-#	coo[i] = (x,y)
-
 #---------------------------CALCUL DES COEFFS DVT LES POLYNOMES DE LAGRANGE----------------------------
 
 for i in range(1, choix+1):
@@ -64,7 +36,10 @@ for i in range(1, choix+1):
 		d *= coo[i][0]-coo[j][0]
 	coeff_p = (coo[i][1])/d
 	coeffs_poly_l[i] = coeff_p
-	
+	test[i] = d
+
+
+
 #-----------------CALCUL DES COEFFS DE CHAQUE NUMERATEUR DE CHAQUE POLYNOME DE LAGRANGE----------------
 
 for i in range(1, choix+1):
@@ -103,47 +78,73 @@ for i in range(1, choix+1):
 	coeff[i] = a
 	del coeff[i][choix]
 
-#----------------------------------CALCUL DES COEFFS FINAUX----------------------------------------
-
-coeff['total'] = {}
 
 for i in range(1, choix+1):
 	for j in range(0, choix):
-		coeff[i][j] *= coeffs_poly_l[i]
-		if i == 1:
-			coeff['total'][j+1] = 0
-		coeff['total'][j+1] += coeff[i][j]
+		coeff[i][j] *= coo[i][1]
 
-
-for l in range(1, choix+1):
-	del coeff[l]
-
-#----------------------------------ARRONDISSEMENT DES COEFFS--------------------------------------
 
 for i in range(1, choix+1):
-	a = ""
-	part_ent = ""
-	part_dec = ""
-	coeff['total'][i] = str(coeff['total'][i])
-	a = coeff['total'][i]
+	frac[i] = {}
+	for j in range(0, choix):
+		frac[i][j+1] = [coeff[i][j], test[i]]
 
-	a = a.split(".")
 
-	part_ent = a[0]
-	part_dec = a[1]
+def somme_frac(frac_1, frac_2):
+    num_1 = frac_1[0] * frac_2[1]
+    num_2 = frac_2[0] * frac_1[1]
+    deno_commun = frac_1[1] * frac_2[1]
+    num = num_1 + num_2
+    return [num, deno_commun]
 
-	part_dec = a[1][:100]
-	
-	a = part_ent + "." + part_dec
-	coeff['total'][i] = a
+frac_f = {}
+for i in range(1, choix+1):
+	for j in range(1, choix):
+		frac[j+1][i] = somme_frac(frac[j][i], frac[j+1][i])
+	frac_f[i] = frac[choix][i]
 
-#--------------------------------------AFFICHAGE DES RESULTATS-----------------------------------
+
+def pgcd(a,b):
+    if b==0:
+        return a
+    else:
+        r=a%b
+        return pgcd(b,r)
+
+def simp(f):
+	d = pgcd(f[0], f[1])
+	f[0] /= d
+	f[1] /= d
+	frac = [f[0], f[1]]
+	return frac
+
+for i in range(1, choix+1):
+	frac_f[i] = simp(frac_f[i])
+	for j in range(0, 2):
+		frac_f[i][j] = int(frac_f[i][j])
+
 
 output = ""
-for i in range(1, choix):
-	output += str(coeff['total'][i]) + "x^(" + str(choix-i) + ") + "
-	#output += str(coeff['total'][i]) + "x^" + str(choix-i) + " + "
-output += str(coeff['total'][choix])
+for i in range(1, choix-1):
+	if frac_f[i][1] == 1:
+		output += str(frac_f[i][0]) + ".x^(" + str(choix-i) + ") + "
+	else:
+		output += "(" + str(frac_f[i][0]) + " / " + str(frac_f[i][1]) + ").x^(" + str(choix-i) + ") + "
 
-print("\n\n")
+if frac_f[choix-1][1] == 1:
+	output += str(frac_f[choix-1][0]) + ".x + "
+else:
+	output += "(" + str(frac_f[choix-1][0]) + " / " + str(frac_f[choix-1][1]) + ").x + "
+
+if frac_f[choix][1] == 1:
+	output += str(frac_f[choix][0])
+else:
+	output += str(frac_f[choix][0]) + " / " + str(frac_f[choix][1])
+
+print("\n\n\n")
+print("Le polynôme passant par ces points est : ")
 print(output)
+
+"""
+with open("output.txt", "w") as file:
+	file.write(output)"""
