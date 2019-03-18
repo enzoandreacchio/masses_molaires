@@ -144,10 +144,11 @@ for i in range(1, choix-1):
 	else:
 		output += "(" + str(frac_f[i][0]) + "/" + str(frac_f[i][1]) + ").x^(" + str(choix-i) + ") + "
 
-if frac_f[choix-1][1] == 1:
-	output += str(frac_f[choix-1][0]) + ".x + "
-else:
-	output += "(" + str(frac_f[choix-1][0]) + "/" + str(frac_f[choix-1][1]) + ").x + "
+if choix > 1:		
+	if frac_f[choix-1][1] == 1:
+		output += str(frac_f[choix-1][0]) + ".x + "
+	else:
+		output += "(" + str(frac_f[choix-1][0]) + "/" + str(frac_f[choix-1][1]) + ").x + "
 
 if frac_f[choix][1] == 1:
 	output += str(frac_f[choix][0])
