@@ -140,11 +140,11 @@ if frac_f[choix][1] == 1:
 	output += str(frac_f[choix][0])
 else:
 	output += str(frac_f[choix][0]) + " / " + str(frac_f[choix][1])
-
+"""
 print("\n\n\n")
 print("Le polynôme passant par ces points est : ")
-print(output)
+print(output)"""
 
-"""
+
 with open("output.txt", "w") as file:
-	file.write(output)"""
+	file.write(output)
