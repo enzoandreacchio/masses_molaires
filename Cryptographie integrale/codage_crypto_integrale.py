@@ -1,7 +1,58 @@
 from scipy.integrate import quad
 import numpy as np
+import math
 
 
+
+#//////////////////////////////////////// FONCTION CLE /////////////////////////////////////////////////
+def f(x):
+	return (math.sin(math.cos(x**2)))
+#///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+# Définition de la fonction qui arrondit un float a avec n chiffres significatifs 
+def arr(a, n):
+	n = int(n)
+	a = float(a)
+	a = str(a)
+	total = 0
+	l = []
+	max = n
+	i = 0
+	m = 0
+	while i <= max:
+		if a[i] == ".":
+			num_virgule = i
+			i+=1
+			continue
+		elif a[i] == "-":
+			l.append(a[i])
+			max+=1
+			i+=1
+			continue
+		elif (a[i] == "0") and (total == 0):
+			l.append(a[i])
+			max+=1
+			i+=1
+			continue
+		else:
+			l.append(a[i])
+			total += int(a[i])
+			i+=1
+
+	char = ""
+	for i in range(0, num_virgule):
+		char += str(l[i])
+	char += "."
+	for i in range(num_virgule + 1, max + 1):
+		char += str(a[i])
+	a = float(char)
+	return a
+
+# Définition de la fonction qui à une chaîne de caractère renvoie une liste de nombres correspondants
 def txt_to_nb(txt):
 	alphabet = "abcdefghijklmnopqrstuvwxyz"
 	liste = []
@@ -12,13 +63,6 @@ def txt_to_nb(txt):
 				liste.append(j)
 	return liste
 
-
-
-
-#//////////////////////////////////// FONCTION PROVISOIRE ///////////////////////////////////////////////
-def f(x):
-	return (3*x**2 - 4*x + 2)
-#///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # Requête du message à coder à l'utilisateur
@@ -61,20 +105,26 @@ for i in range(1, len(message) + 1):
 # Inversion de la matrice A
 inv_mat_A = np.linalg.inv(mat_A)
 
-# Réalisation du prpduit matriciel entre A et B pour obtenir la matrice inconnue X
+# Réalisation du produit matriciel entre A et B pour obtenir la matrice inconnue X
 mat_X = inv_mat_A.dot(mat_B)
 
 
 # Création du polynôme à transmettre à l'utilisateur 2
 output = ""
+print("Le polynôme à transmettre est : ")
 for i in range(0, len(message)):
-	mat_X[i][0] = float(mat_X[i][0])
+# Arrondissement des coefficients de telle sorte qu'ils soient assez précis et pas en valeur exacte pour empêcher que l'on puisse remonter les calculs
+	mat_X[i][0] = arr(float(mat_X[i][0]), 15)
+
 	if i == len(message) - 1:
+		print(str(mat_X[i][0]))
 		output += str(mat_X[i][0])
 	elif i == len(message) - 2:
-		output += str(mat_X[i][0]) + " * x + "
+		print(str(mat_X[i][0]) + " * x + ")
+		output += str(mat_X[i][0]) + "e"
 	else:
-		output += str(mat_X[i][0]) + " * x^" + str(len(message) - (i+1)) + " + "
+		print(str(mat_X[i][0]) + " * x^" + str(len(message) - (i+1)) + " + ")
+		output += str(mat_X[i][0]) + "e"
 
-print("Le polynôme à transmettre est : ")
-print(output)
+print("\n \n \n Mode 'prêt à être envoyé' : ")
+print("' " + output + " '")
