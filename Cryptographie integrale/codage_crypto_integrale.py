@@ -49,8 +49,6 @@ def arr(a, n):
     return a
 
 # Définition de la fonction qui à une chaîne de caractère renvoie une liste de nombres correspondants
-
-
 def txt_to_nb(txt):
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     liste = []
