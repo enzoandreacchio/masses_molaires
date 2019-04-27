@@ -8,7 +8,7 @@ def f(x):
     return (math.sin(math.cos(x**2)))
 #///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+"""
 # Définition de la fonction qui permet de calculer l'intégrale par parties d'une fonction f sur un intervalle [a;b]
 def integ(f, a, b):
     output = 0
@@ -21,7 +21,7 @@ def integ(f, a, b):
         i += sec
         sup += f(i) * sec
     return (inf + sup) / 2
-
+"""
 
 # Input du message à décoder
 msg_code = input("Entrez le message à décoder : ")
@@ -40,11 +40,9 @@ def g(x):
 
 # Création de la fonction qui sera intégrée pour donner l'aire entre les deux courbes
 def h(x):
-    return (math.copysign(f(x) - g(x), 1))
+    return (f(x) - g(x))
 
 # Output des valeurs obtenues
 for i in range(1, len(liste_coeffs) + 1):
-    # Valeur calculé grâce à la méthode d'intégration codée ci-dessus
-    print(integ(h, i - 1, i))
     # Valeur calculée grâce à la fonction de spicy.integrate
-    print(quad(h, i - 1, i)[0])
+    print(abs(quad(h, i - 1, i)[0]))
