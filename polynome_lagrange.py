@@ -159,6 +159,7 @@ print("Le polynôme passant par ces points est : ")
 print(output)
 
 
+input()
 
 
 
